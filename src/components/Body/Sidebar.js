@@ -12,7 +12,8 @@ class Sidebar extends Component {
 		super(props);
 
 		this.state = {
-			timer: '' //For rendering timer component , see component did mount , in component did mount because we neew to pass the reference to teh submit button after its mounted
+			timer: '', //For rendering timer component , see component did mount , in component did mount because we neew to pass the reference to teh submit button after its mounted
+			btnSpinner: 'none'
 		};
 
 		this.submit = null; //reference to submit button
@@ -21,6 +22,35 @@ class Sidebar extends Component {
 	componentDidMount = () => {
 		if (this.props.testData.duration != -1 && !this.props.submitted)
 			this.setState({ timer: <Timer duration={this.props.testData.duration} submit={this.submit} /> });
+	};
+
+	sendResult = () => {
+		this.setState({ btnSpinner: '' });
+		if (this.props.submitted === 1) {
+			this.props.enter(2);
+		} else {
+			let res = this.props.questions.map((data, index) => {
+				let m = 0;
+				if (data.fields.type == 'F') {
+					if (data.answer === data.fields.answer) m = data.fields.marks;
+				} else if (data.fields.type === 'O' || data.fields.type === 'M') {
+					if (data.answer.join('') == data.fields.answer) {
+						m = data.fields.marks;
+					}
+				}
+				return { ...data, marks: m };
+			});
+			let form = new FormData();
+			form.append('response', JSON.stringify(res));
+			fetch(window.base + '/material/api/test/saveResponse/' + this.props.pk + '/', {
+				method: 'POST',
+				credentials: window.cred,
+				body: form
+			})
+				.then(() => this.props.enter(2))
+				.catch((err) => alert(err));
+		}
+		this.setState({ btnSpinner: 'none' });
 	};
 
 	render() {
@@ -33,9 +63,15 @@ class Sidebar extends Component {
 							id={styles.addBtn}
 							className="btn btn-dark"
 							ref={(el) => (this.submit = el)}
-							onClick={() => this.props.enter(2)}
+							onClick={() => {
+								this.sendResult();
+							}}
 						>
 							{this.props.submitted ? 'Result' : 'Submit'}
+							<span
+								className="ml-1 spinner-border spinner-border-sm"
+								style={{ display: this.state.btnSpinner }}
+							/>
 						</button>
 					</h1>
 
@@ -52,7 +88,9 @@ class Sidebar extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		testData: state.Test.fields
+		pk: state.Test.pk,
+		testData: state.Test.fields,
+		questions: state.Test.questions
 	};
 };
 

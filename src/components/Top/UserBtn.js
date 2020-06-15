@@ -34,10 +34,17 @@ function UserBtn(props) {
 					''
 				)}
 				<hr className="m-0 mt-1" />
-				<a href="#" className={[ styles.navLink, styles.userPannelLink, 'pb-0 mt-2 mb-1 mr-2 ml-1' ].join(' ')}>
+				<a
+					href="#"
+					className={[ styles.navLink, styles.userPannelLink, 'pb-0 mt-2 mb-1 mr-2 ml-1' ].join(' ')}
+					style={{ opacity: '30%' }}
+				>
 					Profile
 				</a>
-				<a href="#" className={[ styles.navLink, styles.userPannelLink, 'pb-0 mb-0 mr-2 ml-1' ].join(' ')}>
+				<a
+					href={window.base + '/user/logout/'}
+					className={[ styles.navLink, styles.userPannelLink, 'pb-0 mb-0 mr-2 ml-1' ].join(' ')}
+				>
 					Logout
 				</a>
 			</div>
