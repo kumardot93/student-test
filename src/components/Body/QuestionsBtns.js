@@ -9,13 +9,35 @@ class QuestionsBtns extends Component {
 		let questions = '';
 		//mapping question buttons from all the available question in redux state
 		questions = this.props.questions.map((data, index) => {
+			let state = data.state.join('');
+			let cls = '';
+			switch (state) {
+				case '100':
+					cls = 'btn-danger';
+					break;
+				case '010':
+				case '110':
+					cls = 'btn-success';
+					break;
+				case '001':
+				case '101':
+					cls = 'btn-warning';
+					break;
+				case '011':
+				case '111':
+					cls = 'btn-info';
+					break;
+				default:
+					cls = 'btn-dark';
+			}
+			if (index === this.props.active) cls = 'btn-primary';
 			return (
 				<button
-					className={[ 'btn btn-dark m-2', styles.btns ].join(' ')}
+					className={[ 'btn m-2', styles.btns, cls ].join(' ')}
 					key={index}
 					onClick={() => this.props.updateActive(index)}
 					//update active questin on change also push to buffer for sending to backend i there is any change se the corrosponding action in redux/action/Top.js
-					disabled={index === this.props.active}
+					active={index === this.props.active}
 				>
 					{index + 1}
 				</button>
@@ -25,10 +47,14 @@ class QuestionsBtns extends Component {
 			<div id={styles.qBtnsCont}>
 				{' '}
 				<button
-					className={[ 'btn btn-dark m-2 form-control w-25', styles.btns ].join(' ')}
+					className={[
+						'btn m-2 form-control w-25',
+						styles.btns,
+						-1 === this.props.active ? 'btn-primary' : 'btn-dark'
+					].join(' ')}
 					onClick={() => this.props.updateActive(-1)}
 					//update active questin to test data also push to buffer for sending to backend i there is any change se the corrosponding action in redux/action/Top.js
-					disabled={-1 === this.props.active}
+					active={-1 === this.props.active}
 				>
 					Test
 				</button>{' '}

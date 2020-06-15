@@ -17,13 +17,13 @@
 	border: none;
 	float: right;
 	transition: 0.3s;
-	font-size: xx-large;
+	font-size: small;
 	color: white;
-	margin: 3px;
+	margin: 4px;
 }
 
 #addBtn:hover {
-	transform: scale(1.1);
+	transform: scale(1.05);
 }
 
 @media only screen and (max-width: 950px) {

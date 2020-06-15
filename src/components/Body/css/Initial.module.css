@@ -1,0 +1,22 @@
+#entry {
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+}
+
+#desc {
+	max-width: 100%;
+	white-space: pre-wrap;
+}
+
+#details {
+	float: right;
+}
+
+@media only screen and (max-width: 550px) {
+	#details {
+		/* float: none; */
+		width: 100%;
+		text-align: right;
+	}
+}

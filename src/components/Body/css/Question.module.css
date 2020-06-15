@@ -11,13 +11,17 @@
 }
 
 .qno {
+	position: relative;
+	top: 12px;
 }
 
 .qtext {
 }
 
+.qinfo {
+}
+
 .rightpannel {
-	float: right;
 }
 
 .marksinp {
@@ -41,8 +45,6 @@
 }
 
 .ansInp {
-	width: 25%;
-	min-width: 200px;
 }
 
 #desc {
@@ -75,5 +77,8 @@
 		width: stretch;
 
 		margin-right: 25px;
+	}
+	.qinfo {
+		font-size: large;
 	}
 }

@@ -23,7 +23,7 @@ function Top(props) {
 				<span>eduHub</span>
 			</h1>
 			<Nav />
-			<SocketStatus />
+			{/* <SocketStatus /> */}
 			<Notiification />
 			<UserBtn />
 		</div>

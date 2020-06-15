@@ -2,105 +2,91 @@ import React, { Component } from 'react';
 import styles from './css/Question.module.css';
 import Choices from './Choices.js';
 import Image from './Image.js';
+import Initial from './Initial.js';
 
 import { connect } from 'react-redux';
-import {
-	updateActiveQuestionText,
-	updateAnswer,
-	updateMarks,
-	updateType,
-	updateTitle,
-	updateDescription,
-	updateTestData
-} from './../../redux/actions/Test.js';
+import { updateAnswer, markForLater } from './../../redux/actions/Test.js';
 
 class Question extends Component {
+	check = () => {
+		let res = '';
+		if (this.props.submitted) {
+			if (this.props.question.fields.type == 'F') {
+				if (this.props.question.answer == this.props.question.fields.answer)
+					res = <h6 className="text-success ml-4 mt-4 pl-1">Correct</h6>;
+				else res = <h6 className="text-danger ml-4 mt-4 pl-1">Wrong</h6>;
+			} else if (this.props.question.fields.type == 'O' || this.props.question.fields.type == 'M') {
+				if (this.props.question.answer.join('') == this.props.question.fields.anaswer)
+					res = <h6 className="text-success ml-4 mt-4 pl-1">Correct</h6>;
+				else res = <h6 className="text-danger ml-4 mt-4 pl-1">Wrong</h6>;
+			}
+		}
+		return res;
+	};
+
 	render() {
-		console.log('test data:', this.props.test);
 		return (
-			<div id={styles.questionMain} className="p-1 ml-2 flex-grow-1 mr-1 bg-light pr-4">
+			<div id={styles.questionMain} className="p-1 m-1 flex-grow-1 bg-light">
 				{this.props.question === undefined || this.props.active === -1 ? (
-					// <div className="d-flex flex-row justify-content-center align-items-center h-100 w-100">
-					// 	<h1 className="text-muted">No Question Selected</h1>
-					// </div>
-					<div className="p-4">
-						<label>Test Title:</label>
-						<input
-							type="text"
-							className="form-control "
-							value={this.props.test.fields.title}
-							onChange={(event) => this.props.updateTitle(event.target.value)}
-						/>
-						<label className="mt-3">Description:</label>
-						<textarea
-							className="form-control mb-4"
-							id={styles.desc}
-							rows="15"
-							value={this.props.test.fields.description}
-							onChange={(event) => this.props.updateDescription(event.target.value)}
-						/>
-					</div>
+					<Initial display="none" />
 				) : (
 					<React.Fragment>
-						<div className="d-flex flex-row">
-							<h1 className={[ 'ml-2 mt-4', styles.qno ].join(' ')}>
-								<span className="mr-4 mt-0 pt-0">Q.{this.props.active + 1}</span>
-							</h1>
-							<textarea
-								className={[ 'mt-4 form-control', styles.qtext ].join(' ')}
-								value={this.props.question.fields.text}
-								onChange={(ev) => this.props.updateActiveQuestionText(ev.target.value)}
-								placeholder="Write your question text here"
-								cols="80"
-								rows="6"
-							/>
+						<div className="d-flex flex-row align-items-top">
+							<h2 className={[ 'd-inline mr-0', styles.qno ].join(' ')}>
+								<span className="mr-2 mt-0 pt-0">Q.{this.props.active + 1}</span>
+							</h2>
+							<h4 className={[ 'mt-3 mr-0 pr-0 ml-1', styles.qinfo ].join(' ')}>
+								{this.props.question.fields.text}
+							</h4>
+							<div className={[ styles.rightpannel, 'ml-auto mr-3 mt-2' ].join(' ')}>
+								<h6>{this.props.question.fields.marks}</h6>
+								<h6>{this.props.question.fields.type}</h6>
+							</div>
 						</div>
 
 						<Image />
 						<br />
 
 						{this.props.question.fields.type === 'O' || this.props.question.fields.type === 'M' ? (
-							<Choices />
-						) : (
-							''
-						)}
-
-						{this.props.question.fields.type !== 'D' ? (
+							<Choices type={this.props.question.fields.type} submitted={this.props.submitted} />
+						) : this.props.question.fields.type !== 'D' ? (
 							<React.Fragment>
 								<label className="ml-4 pl-4 mt-4">Answer:</label>
 								<input
-									className={[ 'ml-4 pl-4 form-control', styles.ansInp ].join(' ')}
+									className={[ 'ml-4 pl-4 form-control w-50', styles.ansInp ].join(' ')}
 									style={{ display: 'inline' }}
 									type="text"
 									name="answer"
-									value={this.props.question.fields.answer}
+									value={this.props.question.answer}
 									onChange={(ev) => this.props.updateAnswer(ev.target.value)}
+									readOnly={this.props.submitted}
 								/>
 							</React.Fragment>
 						) : (
-							''
+							<div className="d-flex align-items-strech flex-column pr-4 mr-4 ml-4">
+								<label className="mt-4">Answer:</label>
+								<textarea
+									className={[ 'pl-4 form-control mb-4' ].join(' ')}
+									style={{ display: 'inline' }}
+									type="text"
+									name="answer"
+									rows="8"
+									cols="20"
+									value={this.props.question.answer}
+									onChange={(ev) => this.props.updateAnswer(ev.target.value)}
+									readOnly={this.props.submitted}
+								/>
+							</div>
 						)}
-						<div className={[ styles.rightpannel, 'p-2 mt-4 pr-4' ].join(' ')}>
-							<label>Marks:</label>
-							<input
-								className={[ 'form-control ml-4', styles.marksinp ].join(' ')}
-								value={this.props.question.fields.marks}
-								onChange={(ev) => this.props.updateMarks(ev.target.value)}
-							/>
-							<br />
-							<label className="mt-4">Question Type:</label>
-							<select
-								className="form-control"
-								value={this.props.question.fields.type}
-								onChange={(ev) => this.props.updateType(ev.target.value)}
-							>
-								<option value="">---------</option>
-								<option value="D">Descriptive</option>
-								<option value="O">One_Option_Correct</option>
-								<option value="M">Multu_Option_Correct</option>
-								<option value="F">Fill</option>
-							</select>
-						</div>
+						{this.check()}
+						<br />
+						<button
+							className="float-right btn btn-info mt-2"
+							style={{ display: this.props.submitted ? 'none' : 'block' }}
+							onClick={this.props.mark}
+						>
+							Mark for later
+						</button>
 					</React.Fragment>
 				)}
 			</div>
@@ -110,7 +96,6 @@ class Question extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		ws: state.SocketState.socket,
 		active: state.Test.active,
 		question: state.Test.questions[state.Test.active],
 		test: state.Test
@@ -119,12 +104,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateActiveQuestionText: (text) => dispatch(updateActiveQuestionText(text)),
 		updateAnswer: (ans) => dispatch(updateAnswer(ans)),
-		updateMarks: (marks) => dispatch(updateMarks(marks)),
-		updateType: (val) => dispatch(updateType(val)),
-		updateTitle: (data) => dispatch(updateTitle(data)),
-		updateDescription: (data) => dispatch(updateDescription(data))
+		mark: () => dispatch(markForLater())
 	};
 };
 

@@ -2,8 +2,8 @@
 	height: calc(100% - 45px);
 }
 
-.btns:disabled {
-	background-color: green;
+.btns:active {
+	/* background-color: lightblue; */
 	font-size: large;
 	color: white;
 	box-shadow: 0 0 4px black;

@@ -1,80 +1,35 @@
-const Test = (state = { active: -1, questions: [], fields: {}, changed: 0 }, action) => {
+const Test = (state = { active: -1, questions: [], fields: {} }, action) => {
 	state = { ...state };
 	switch (action.type) {
 		case 'updateTestData':
 			state = { ...action.payload };
 			break;
-		case 'newQuestion':
-			state.questions = [
-				...state.questions,
-				{
-					pk: null,
-					fields: {
-						parent_test: state.pk,
-						text: '',
-						type: '',
-						image: '',
-						marks: 0,
-						answer: '',
-						jsonChoices: ''
-					}
-				}
-			];
-			if (state.active !== -1) {
-				state.questions[state.active].changed = 0;
-			} else if (state.active === -1) {
-				state.changed = 0;
-			}
-			state.active = state.questions.length - 1;
-			break;
+
 		case 'updateActive':
-			if (state.active !== -1) {
-				state.questions[state.active].changed = 0;
-			} else if (state.active === -1) {
-				state.changed = 0;
-			}
 			state.active = action.payload;
+			if (state.active != -1) state.questions[state.active].state[0] = 1;
 			break;
-		case 'updateTestTitle':
-			state.fields.title = action.payload;
-			state.changed = 1;
-			break;
-		case 'updateTestDescription':
-			state.fields.description = action.payload;
-			state.changed = 1;
-			break;
-		case 'updateActiveQuestionText':
-			state.questions[state.active].fields.text = action.payload;
-			state.questions[state.active].changed = 1;
-			state.questions[state.active] = { ...state.questions[state.active] };
-			break;
+
 		case 'updateActiveAnswer':
-			state.questions[state.active].fields.answer = action.payload;
-			state.questions[state.active].changed = 1;
+			state.questions[state.active].answer = action.payload;
 			state.questions[state.active] = { ...state.questions[state.active] };
+			if (state.questions[state.active].fields.type == 'F') {
+				if (state.questions[state.active].answer == '') {
+					state.questions[state.active].state[1] = 0;
+				} else state.questions[state.active].state[1] = 1;
+			} else if (
+				state.questions[state.active].fields.type == 'O' ||
+				state.questions[state.active].fields.type == 'M'
+			) {
+				console.log(state.questions[state.active].answer.join(''));
+				console.log('OM');
+				if (state.questions[state.active].answer.join('') == '0000') {
+					state.questions[state.active].state[1] = 0;
+				} else state.questions[state.active].state[1] = 1;
+			}
 			break;
-		case 'updateActiveMarks':
-			state.questions[state.active].fields.marks = action.payload;
-			state.questions[state.active].changed = 1;
-			state.questions[state.active] = { ...state.questions[state.active] };
-			break;
-		case 'updateActiveQuestionType':
-			state.questions[state.active].fields.type = action.payload;
-			state.questions[state.active].changed = 1;
-			state.questions[state.active] = { ...state.questions[state.active] };
-			break;
-		case 'updateActiveChoices':
-			let c = state.questions[state.active].fields.jsonChoices;
-			c = c === '' ? [] : JSON.parse(c);
-			c[action.payload.cindex - 1] = action.payload.cdata;
-			state.questions[state.active].fields.jsonChoices = JSON.stringify(c);
-			state.questions[state.active].changed = 1;
-			state.questions[state.active] = { ...state.questions[state.active] };
-			break;
-		case 'imageUploaded':
-			state.questions[action.payload.index].fields.image = action.payload.image;
-			state.questions[action.payload.index] = { ...state.questions[action.payload.index] };
-			break;
+		case 'markForLater':
+			state.questions[state.active].state[2] = (state.questions[state.active].state[2] + 1) % 2;
 		default:
 			break;
 	}

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styles from './css/Main.module.css';
 import Sidebar from './Sidebar.js';
+import Initial from './Initial.js';
+import Result from './result.js';
 import { extractKey } from './../../SocketManager.js';
 
 import { connect } from 'react-redux';
@@ -9,6 +11,9 @@ import { updateTestData } from './../../redux/actions/Test.js';
 //Entry point for the main body
 class Main extends Component {
 	//fetching and saving the test data
+	state = {
+		enter: 0
+	};
 	fetchData = (key) => {
 		//fetches all the test data at once
 		fetch(window.base + '/material/api/test/data/' + key + '/', { credentials: window.cred })
@@ -24,10 +29,39 @@ class Main extends Component {
 		this.fetchData(key);
 	};
 
+	enter = (val) => {
+		this.setState({ enter: val });
+	};
+
+	screen = () => {
+		let res;
+		switch (this.state.enter) {
+			case 0:
+				res = <Initial enter={this.enter} display="block" />;
+				break;
+			case 1:
+				res = <Sidebar enter={this.enter} submitted={0} />; //submitted == 1 means not submitted
+				break;
+			case 2:
+				res = <Result enter={this.enter} />;
+				break;
+			case 3:
+				res = <Sidebar enter={this.enter} submitted={1} />;
+				break;
+		}
+
+		return res;
+	};
+
 	render() {
 		return (
-			<div id={styles.main} className="p-1 d-flex pt-2">
-				<Sidebar />
+			<div
+				id={styles.main}
+				className={
+					this.state.enter == 1 ? [ 'p-1 d-flex pt-2', styles.fullScreen ].join(' ') : 'p-1 d-flex pt-2'
+				}
+			>
+				{this.screen()}
 			</div>
 		);
 	}

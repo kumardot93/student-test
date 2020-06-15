@@ -14,7 +14,7 @@ window.cred = 'include';
 ReactDOM.render(
 	<Provider store={Store}>
 		<App />
-		<SocketManager />
+		{/* <SocketManager /> */}
 	</Provider>,
 	document.getElementById('root')
 );
