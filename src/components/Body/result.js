@@ -11,7 +11,7 @@ function Result(props) {
 		total += data.fields.marks;
 		let m = 0;
 		if (data.fields.type == 'F') {
-			if (data.answer === data.fields.answer) m = data.fields.marks;
+			if (data.answer.toLocaleLowerCase() === data.fields.answer.toLocaleLowerCase()) m = data.fields.marks;
 		} else if (data.fields.type === 'O' || data.fields.type === 'M') {
 			if (data.answer.join('') == data.fields.answer) {
 				m = data.fields.marks;
