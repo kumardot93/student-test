@@ -16,7 +16,7 @@ class Question extends Component {
 					res = <h6 className="text-success ml-4 mt-4 pl-1">Correct</h6>;
 				else res = <h6 className="text-danger ml-4 mt-4 pl-1">Wrong</h6>;
 			} else if (this.props.question.fields.type == 'O' || this.props.question.fields.type == 'M') {
-				if (this.props.question.answer.join('') == this.props.question.fields.anaswer)
+				if (this.props.question.answer.join('') == this.props.question.fields.answer)
 					res = <h6 className="text-success ml-4 mt-4 pl-1">Correct</h6>;
 				else res = <h6 className="text-danger ml-4 mt-4 pl-1">Wrong</h6>;
 			}
