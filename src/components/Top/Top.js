@@ -8,7 +8,9 @@ import SocketStatus from './SockerStatus.js';
 import { connect } from 'react-redux';
 import { updateProfile } from './../../redux/actions/Profile.js';
 
+// Entry point for the top bar
 function Top(props) {
+	//Fetching the user profile data
 	useEffect(
 		() => {
 			fetch(window.base + '/user/api/profile/', { credentials: window.cred }) //fetching profile data
@@ -22,6 +24,7 @@ function Top(props) {
 			<h1 className="display-3 ml-2 text-dark" id={styles.edu} onClick={() => window.location.assign('/')}>
 				<span>eduHub</span>
 			</h1>
+			{/* nav will not appear in the mobile view */}
 			<Nav />
 			{/* <SocketStatus /> */}
 			<Notiification />

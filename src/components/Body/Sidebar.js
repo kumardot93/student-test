@@ -20,8 +20,9 @@ class Sidebar extends Component {
 	}
 
 	componentDidMount = () => {
+		//Stores time component fot cowndown and rendering in UI
 		if (this.props.testData.duration != -1 && !this.props.submitted)
-			this.setState({ timer: <Timer duration={this.props.testData.duration} submit={this.submit} /> });
+			this.setState({ timer: <Timer duration={this.props.testData.duration} submit={this.submit} /> }); //Timer does cowndown for given duation in minutes and automatically submits after the times ends
 	};
 
 	sendResult = () => {

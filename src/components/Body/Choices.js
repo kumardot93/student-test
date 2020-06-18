@@ -6,31 +6,19 @@ import { updateAnswer } from './../../redux/actions/Test.js';
 
 class Choices extends Component {
 	resetAnswer = (ev) => {
+		//To reset answer
 		this.props.updateAnswer([ 0, 0, 0, 0 ]);
 	};
 
 	answerHandler = (ev, index) => {
 		let ans = this.props.question.answer;
 		if (this.props.question.fields.type === 'O') {
-			switch (index) {
-				case 1:
-					ans = [ 1, 0, 0, 0 ];
-					break;
-				case 2:
-					ans = [ 0, 1, 0, 0 ];
-					break;
-				case 3:
-					ans = [ 0, 0, 1, 0 ];
-					break;
-				case 4:
-					ans = [ 0, 0, 0, 1 ];
-					break;
-			}
+			ans = [ 0, 0, 0, 0 ];
+			ans[index - 1] = 1;
 		} else {
 			ans[index - 1] = (ans[index - 1] + 1) % 2;
 		}
 		this.props.updateAnswer(ans);
-		console.log(this.props.question.answer);
 	};
 
 	render() {

@@ -12,7 +12,7 @@ import { updateTestData } from './../../redux/actions/Test.js';
 class Main extends Component {
 	//fetching and saving the test data
 	state = {
-		enter: 0
+		enter: 0 //Determines what to render to the main body
 	};
 	fetchData = (key) => {
 		//fetches all the test data at once
@@ -30,6 +30,7 @@ class Main extends Component {
 	};
 
 	enter = (val) => {
+		//to change the value of this.state.enter
 		this.setState({ enter: val });
 	};
 
@@ -37,10 +38,10 @@ class Main extends Component {
 		let res;
 		switch (this.state.enter) {
 			case 0:
-				res = <Initial enter={this.enter} display="block" />;
+				res = <Initial enter={this.enter} display="block" />; //the first screen to apear
 				break;
 			case 1:
-				res = <Sidebar enter={this.enter} submitted={0} />; //submitted == 1 means not submitted
+				res = <Sidebar enter={this.enter} submitted={0} />;
 				break;
 			case 2:
 				res = <Result enter={this.enter} />;

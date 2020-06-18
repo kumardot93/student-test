@@ -8,3 +8,13 @@
 	color: white;
 	box-shadow: 0 0 4px black;
 }
+
+@media only screen and (max-width: 950px) {
+	#qBtnsCont {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		overflow-y: hidden;
+		align-items: center;
+	}
+}

@@ -8,12 +8,12 @@ class Initial extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			marks: 0
+			marks: 0 //For storing total marks
 		};
 	}
 
 	static getDerivedStateFromProps = (props, state) => {
-		let m = 0;
+		let m = 0; //Calculating total marks
 		props.questions.forEach((qs) => {
 			m += qs.fields.marks;
 		});
@@ -40,6 +40,12 @@ class Initial extends Component {
 					<span>Total Marks: {this.state.marks}</span>
 					<br />
 					<span>Instructor: {this.props.testData.instructor}</span>
+					<br />
+					{this.props.testData.duration == -1 ? (
+						''
+					) : (
+						<span>Time:{this.props.testData.duration} minutes </span>
+					)}
 				</div>
 				<div className="ml-1">
 					<button className="btn btn-dark mr-4" />

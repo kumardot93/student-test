@@ -13,24 +13,24 @@ class QuestionsBtns extends Component {
 			let cls = '';
 			switch (state) {
 				case '100':
-					cls = 'btn-danger';
+					cls = 'btn-danger'; //if not answered
 					break;
 				case '010':
 				case '110':
-					cls = 'btn-success';
+					cls = 'btn-success'; //if answered
 					break;
 				case '001':
 				case '101':
-					cls = 'btn-warning';
+					cls = 'btn-warning'; //if marked for later
 					break;
 				case '011':
 				case '111':
-					cls = 'btn-info';
+					cls = 'btn-info'; //if answered and marked for later
 					break;
 				default:
-					cls = 'btn-dark';
+					cls = 'btn-dark'; //if unvisited
 			}
-			if (index === this.props.active) cls = 'btn-primary';
+			if (index === this.props.active) cls = 'btn-primary'; //if active
 			return (
 				<button
 					className={[ 'btn m-2', styles.btns, cls ].join(' ')}
@@ -45,7 +45,6 @@ class QuestionsBtns extends Component {
 		});
 		return (
 			<div id={styles.qBtnsCont}>
-				{' '}
 				<button
 					className={[
 						'btn m-2 form-control w-25',

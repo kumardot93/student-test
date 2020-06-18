@@ -9,6 +9,7 @@ import { updateAnswer, markForLater } from './../../redux/actions/Test.js';
 
 class Question extends Component {
 	check = () => {
+		// check user given answer with actual answer
 		let res = '';
 		if (this.props.submitted) {
 			if (this.props.question.fields.type == 'F') {
@@ -35,12 +36,12 @@ class Question extends Component {
 				) : (
 					<React.Fragment>
 						<div className="d-flex flex-row align-items-top">
-							<h2 className={[ 'd-inline mr-0', styles.qno ].join(' ')}>
-								<span className="mr-2 mt-0 pt-0">Q.{this.props.active + 1}</span>
+							<h2 className={[ 'd-inline mr-0 mr-2', styles.qno ].join(' ')}>
+								Q.{this.props.active + 1}
 							</h2>
-							<h4 className={[ 'mt-3 mr-0 pr-0 ml-1', styles.qinfo ].join(' ')}>
+							<h5 className={[ 'mt-3 mr-0 pr-0 ml-1', styles.qinfo ].join(' ')}>
 								{this.props.question.fields.text}
-							</h4>
+							</h5>
 							<div className={[ styles.rightpannel, 'ml-auto mr-3 mt-2' ].join(' ')}>
 								<h6>{this.props.question.fields.marks}</h6>
 								<h6>{this.props.question.fields.type}</h6>
