@@ -5,6 +5,7 @@ import QuestionsBtns from './QuestionsBtns.js';
 import Timer from './Timer.js';
 
 import { connect } from 'react-redux';
+import { updateQuestion } from './../../redux/actions/Test.js';
 
 //Side bar or the container of the question buttons also the entry point for the qustion body
 class Sidebar extends Component {
@@ -26,21 +27,46 @@ class Sidebar extends Component {
 	};
 
 	sendResult = () => {
+		//Calculate marks and send result
 		this.setState({ btnSpinner: '' });
 		if (this.props.submitted === 1) {
 			this.props.enter(2);
 		} else {
 			let res = this.props.questions.map((data, index) => {
 				let m = 0;
-				if (data.fields.type == 'F') {
-					if (data.answer === data.fields.answer) m = data.fields.marks;
-				} else if (data.fields.type === 'O' || data.fields.type === 'M') {
-					if (data.answer.join('') == data.fields.answer) {
-						m = data.fields.marks;
-					}
+				switch (data.fields.type) {
+					case 'F':
+						if (data.answer === data.fields.answer) m = data.fields.marks;
+						break;
+					case 'M':
+					case 'O':
+					case 'ON':
+					case 'MN':
+						if (data.answer.join('') === data.fields.answer) {
+							m = data.fields.marks;
+						} else if (data.fields.type === 'MN' || data.fields.type === 'ON') m = -1;
+						break;
+					case 'MP':
+					case 'MNP':
+						let ans = data.fields.answer.split('');
+						let res = data.answer.join('');
+						let mk = [ 0, 0, 0 ];
+						ans.forEach((a, index) => {
+							if (a === '1') {
+								mk[1] += 1;
+								if (res[index] === '1') mk[0] += 1;
+							} else if (a !== res[index]) mk[2] = 1;
+						});
+						if (mk[2] === 1) m = data.fields.type === 'MNP' ? -1 : 0;
+						else m = mk[0] / Math.max(1, mk[1]) * data.fields.marks;
+						m.toFixed(2);
+						break;
 				}
+
 				return { ...data, marks: m };
 			});
+			this.props.updateQuestion(res);
+			console.log(res);
 			let form = new FormData();
 			form.append('response', JSON.stringify(res));
 			fetch(window.base + '/material/api/test/saveResponse/' + this.props.pk + '/', {
@@ -96,7 +122,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {};
+	return {
+		updateQuestion: (data) => dispatch(updateQuestion(data))
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

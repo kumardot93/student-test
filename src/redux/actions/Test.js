@@ -5,7 +5,15 @@ export function updateTestData(data) {
 	let questions = data.questions.map((data) => {
 		data.answer = '';
 		data.state = [ 0, 0, 0 ]; //[0] is for visited at, [1] is for answered and [2] is for mared
-		if (data.fields.type == 'O' || data.fields.type == 'M') data.answer = [ 0, 0, 0, 0 ];
+		if (
+			data.fields.type === 'O' ||
+			data.fields.type === 'M' ||
+			data.fields.type === 'ON' ||
+			data.fields.type === 'MP' ||
+			data.fields.type === 'MN' ||
+			data.fields.type === 'MPN'
+		)
+			data.answer = [ 0, 0, 0, 0 ];
 		return data;
 	});
 	data['questions'] = Object.assign([], questions);
@@ -50,5 +58,12 @@ export function markForLater() {
 	return {
 		type: 'markForLater',
 		payload: null
+	};
+}
+
+export function updateQuestion(data) {
+	return {
+		type: 'updateQuestions',
+		payload: data
 	};
 }

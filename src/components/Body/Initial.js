@@ -47,23 +47,35 @@ class Initial extends Component {
 						<span>Time:{this.props.testData.duration} minutes </span>
 					)}
 				</div>
-				<div className="ml-1">
-					<button className="btn btn-dark mr-4" />
-					<label className="mt-4">Unvisited</label>
-					<br />
+				<div className="ml-1 pt-4">
+					<ul className="float-left mt-4">
+						<li>D : Descriptive</li>
+						<li>F : Fill</li>
+						<li> O : One Option Correct </li>
+						<li>ON : One Option Correct(Negative Marking) </li>
+						<li>M : Multu Option Correct</li>
+						<li>MP : Multu Option Correct(Partially correct)</li>
+						<li> MN : Multu Option Correct(Negative Marking) </li>
+						<li>MPN : Multu Option Correct(Patrially correct and Neative marking)</li>
+					</ul>
+					<div className="float-left ml-4 pl-4 mt-3">
+						<button className="btn btn-dark mr-4" />
+						<label className="mt-4">Unvisited</label>
+						<br />
 
-					<button className="btn btn-danger mr-4" />
-					<label>Unanswered</label>
-					<br />
-					<button className="btn btn-warning mr-4" />
-					<label>Marked For Later</label>
-					<br />
-					<button className="btn btn-info mr-4" />
-					<label>Answered and Marked</label>
-					<br />
-					<button className="btn btn-success mr-4" />
-					<label>Answered</label>
-					<br />
+						<button className="btn btn-danger mr-4" />
+						<label>Unanswered</label>
+						<br />
+						<button className="btn btn-warning mr-4" />
+						<label>Marked For Later</label>
+						<br />
+						<button className="btn btn-info mr-4" />
+						<label>Answered and Marked</label>
+						<br />
+						<button className="btn btn-success mr-4" />
+						<label>Answered</label>
+						<br />
+					</div>
 				</div>
 			</div>
 		);

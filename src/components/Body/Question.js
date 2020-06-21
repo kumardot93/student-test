@@ -11,19 +11,12 @@ class Question extends Component {
 	check = () => {
 		// check user given answer with actual answer
 		let res = '';
-		if (this.props.submitted) {
-			if (this.props.question.fields.type == 'F') {
-				if (
-					this.props.question.answer.toLocaleLowerCase() ==
-					this.props.question.fields.answer.toLocaleLowerCase()
-				)
-					res = <h6 className="text-success ml-4 mt-4 pl-1">Correct</h6>;
-				else res = <h6 className="text-danger ml-4 mt-4 pl-1">Wrong</h6>;
-			} else if (this.props.question.fields.type == 'O' || this.props.question.fields.type == 'M') {
-				if (this.props.question.answer.join('') == this.props.question.fields.answer)
-					res = <h6 className="text-success ml-4 mt-4 pl-1">Correct</h6>;
-				else res = <h6 className="text-danger ml-4 mt-4 pl-1">Wrong</h6>;
-			}
+		if (this.props.submitted && this.props.question.fields.type !== 'D') {
+			if (this.props.question.marks === this.props.question.fields.marks)
+				res = <h6 className="text-success ml-4 mt-4 pl-1">Correct</h6>;
+			else if (this.props.question.marks !== 0)
+				res = <h6 className="text-warning ml-4 mt-4 pl-1">Partially Correct</h6>;
+			else res = <h6 className="text-danger ml-4 mt-4 pl-1">Wrong</h6>;
 		}
 		return res;
 	};
@@ -51,7 +44,12 @@ class Question extends Component {
 						<Image />
 						<br />
 
-						{this.props.question.fields.type === 'O' || this.props.question.fields.type === 'M' ? (
+						{this.props.question.fields.type === 'O' ||
+						this.props.question.fields.type === 'M' ||
+						this.props.question.fields.type === 'ON' ||
+						this.props.question.fields.type === 'MP' ||
+						this.props.question.fields.type === 'MN' ||
+						this.props.question.fields.type === 'MPN' ? (
 							<Choices type={this.props.question.fields.type} submitted={this.props.submitted} />
 						) : this.props.question.fields.type !== 'D' ? (
 							<React.Fragment>

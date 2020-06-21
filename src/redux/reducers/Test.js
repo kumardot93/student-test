@@ -30,6 +30,10 @@ const Test = (state = { active: -1, questions: [], fields: {} }, action) => {
 			break;
 		case 'markForLater':
 			state.questions[state.active].state[2] = (state.questions[state.active].state[2] + 1) % 2;
+		case 'updateQuestions':
+			state.questions = [ ...action.payload ];
+			console.log('state after saving', state);
+			break;
 		default:
 			break;
 	}
