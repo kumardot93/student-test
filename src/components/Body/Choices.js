@@ -12,7 +12,7 @@ class Choices extends Component {
 
 	answerHandler = (ev, index) => {
 		let ans = this.props.question.answer;
-		if (this.props.question.fields.type === 'O') {
+		if (this.props.question.fields.type[0] === 'O') {
 			ans = [ 0, 0, 0, 0 ];
 			ans[index - 1] = 1;
 		} else {

@@ -9,7 +9,7 @@ import { updateAnswer, markForLater } from './../../redux/actions/Test.js';
 
 class Question extends Component {
 	check = () => {
-		// check user given answer with actual answer
+		// check given marks and total marks and tag the question accordingly
 		let res = '';
 		if (this.props.submitted && this.props.question.fields.type !== 'D') {
 			if (this.props.question.marks === this.props.question.fields.marks)
