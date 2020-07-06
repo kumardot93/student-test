@@ -10,6 +10,7 @@ function SocketStatus(props) {
 		case 'connecting':
 		case 'saving':
 		case 'reconnecting':
+		case 'fetching':
 			disp = (
 				<h6 className="text-muted mb-0 pb-0" id={styles.status}>
 					{props.socketStatus}
@@ -34,6 +35,11 @@ function SocketStatus(props) {
 			);
 			break;
 		default:
+			disp = (
+				<h6 className="text-muted" id={styles.status}>
+					{props.socketStatus}
+				</h6>
+			);
 			break;
 	}
 	return <div className="ml-4 pb-0 mt-4">{disp}</div>;

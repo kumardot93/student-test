@@ -29,14 +29,13 @@ body {
 
 #message {
 	position: fixed;
-	bottom: 8px;
+	bottom: -4px;
 	right: 8px;
-	min-height: 10vh;
-	max-width: 40vw;
-	min-width: 25vw;
-	padding: 6px;
-	background-color: rgba(0, 20, 20, 0.6);
-	display: none;
+	height: fit-content;
+	max-height: 22px;
+	max-width: 70vw;
+	font-size: 18px;
+	/* display: none; */
 	animation: msg 10s;
 	border-radius: 4px;
 }
@@ -53,5 +52,11 @@ body {
 	}
 	100% {
 		opacity: 0;
+	}
+}
+
+@media only screen and (max-width: 900px) {
+	#message {
+		font-size: 10px;
 	}
 }

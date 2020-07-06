@@ -7,11 +7,7 @@ function Message(props) {
 		ReactDOM.unmountComponentAtNode(el);
 		el.style.display = 'none';
 	}, 10000);
-	return (
-		<React.Fragment>
-			<h5>{props.message}</h5>
-		</React.Fragment>
-	);
+	return <React.Fragment>{props.message}</React.Fragment>;
 }
 
 export default Message;

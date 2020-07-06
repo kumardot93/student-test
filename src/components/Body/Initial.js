@@ -75,6 +75,11 @@ class Initial extends Component {
 						<button className="btn btn-success mr-4" />
 						<label>Answered</label>
 						<br />
+						<ul>
+							<li className="text-danger mt-1">
+								<p className="mt-4">Do not refresh the page during the test</p>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>

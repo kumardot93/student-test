@@ -26,7 +26,7 @@ function Top(props) {
 			</h1>
 			{/* nav will not appear in the mobile view */}
 			<Nav />
-			{/* <SocketStatus /> */}
+			<SocketStatus />
 			<Notiification />
 			<UserBtn />
 		</div>
