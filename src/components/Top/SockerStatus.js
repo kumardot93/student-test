@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 function SocketStatus(props) {
 	let disp = 'default';
-	console.log('status', props.socketStatus);
+
 	switch (props.socketStatus) {
 		case 'connecting':
 		case 'saving':

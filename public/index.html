@@ -35,16 +35,18 @@
   <div id='overlay'></div>
     <div id="root"></div>
     <p class="p-1 pl-4 pr-4" id="message"></p>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+   
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+<div class="camera">
+    <video id="video">Video stream not available.</video>
+    <button id="snapbutton">Take photo</button> 
+  </div>
+  <canvas id="canvas" style = "display: none;">
+  </canvas>
+  <div class="output">
+    <img id="photo" alt="The screen capture will appear in this box."> 
+  </div>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
 
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

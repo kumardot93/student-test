@@ -37,7 +37,6 @@ class OverlayForm extends Component {
 		})
 			.then((response) => response.text())
 			.then((data) => {
-				console.log(data);
 				if (data.toLowerCase().substring(0, 7) === 'success') {
 					let pk = parseInt(data.toLowerCase().substring(8));
 					setTimeout(() => window.open(this.props.success_url, '_blank'), 2500);
@@ -62,7 +61,6 @@ class OverlayForm extends Component {
 	};
 
 	render() {
-		console.log(this.state);
 		return (
 			<div className="container bg-light" id={styles.overlaymain}>
 				<button id={styles.cross} onClick={(event) => CloseOverlay(event, styles.overlaymain)}>

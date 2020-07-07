@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Message from './components/Message.js';
+import { takepicture } from './index.js';
 
 import store from './redux/Store.js';
 import { connect } from 'react-redux';
@@ -11,7 +12,8 @@ import {
 	sendingData,
 	savedQuestion,
 	dataBufferShift,
-	socketError
+	socketError,
+	addToDataBuffer
 } from './redux/actions/SocketState.js';
 import { updateTestData, updateTestDataForReconnected, submitted } from './redux/actions/Test.js';
 
@@ -91,7 +93,6 @@ class SocketManager extends Component {
 		let questions = store.getState().Test.questions;
 		if (this.props.isready === 0) return;
 		if (this.props.questionBuffer.length !== 0) {
-			console.log('found n question buffer');
 			let qstn = questions[this.props.questionBuffer[0]];
 			let [ answer, state ] = [ qstn.answer, qstn.state ];
 			let data = {
@@ -108,15 +109,34 @@ class SocketManager extends Component {
 			this.ws.send(data);
 		}
 	};
+	snap = (event) => {
+		let image = takepicture();
+		let imageArrayData = Array.from(image.data);
+		let res = {
+			type: 'ferimage',
+			payload: {
+				name: new Date().toLocaleTimeString() + '.png',
+				image: imageArrayData,
+				question_index: this.props.active
+			}
+		};
+		this.props.addToDataBuffer(res);
+	};
 	render() {
 		this.BufferManager();
-		console.log('socket : ', this.props.socket);
-		return <React.Fragment />;
+		// console.log('socket : ', this.props.socket);
+
+		return (
+			<React.Fragment>
+				<button onClick={this.snap}>snap</button>
+			</React.Fragment>
+		);
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
+		active: state.Test.active,
 		socket: state.SocketState,
 		dataBuffer: state.SocketState.dataBuffer,
 		questionBuffer: state.SocketState.questionBuffer,
@@ -136,7 +156,8 @@ const mapDispatchToProps = (dispatch) => {
 		savedQuestion: () => dispatch(savedQuestion()),
 		dataBufferShift: () => dispatch(dataBufferShift()),
 		socketError: () => dispatch(socketError()),
-		submitted: (marks) => dispatch(submitted(marks))
+		submitted: (marks) => dispatch(submitted(marks)),
+		addToDataBuffer: (data) => dispatch(addToDataBuffer(data))
 	};
 };
 

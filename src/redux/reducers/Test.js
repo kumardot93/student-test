@@ -17,7 +17,6 @@ const Test = (state = { active: -1, questions: [], fields: {} }, action) => {
 				if (state.questions[state.active].answer == '') {
 					state.questions[state.active].state[1] = 0;
 				} else {
-					console.log('Working----------');
 					state.questions[state.active].state[1] = 1;
 				}
 			} else if ([ 'O', 'M', 'ON', 'MP', 'MN', 'MNP' ].includes(state.questions[state.active].fields.type)) {
@@ -32,14 +31,12 @@ const Test = (state = { active: -1, questions: [], fields: {} }, action) => {
 			state.questions[state.active].changed = 1; //raising the changed falg to 1 for sending the data over ws
 			break;
 		case 'submitted': //used afetr submtting to update marks for each question
-			console.log('payload for submtted: ', action.payload);
 			state.questions = state.questions.map((question, index) => {
 				return {
 					...question,
 					marks: action.payload[index]
 				};
 			});
-			console.log('state after saving', state);
 			break;
 		default:
 			break;
