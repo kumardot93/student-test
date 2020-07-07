@@ -13,16 +13,14 @@ const Test = (state = { active: -1, questions: [], fields: {} }, action) => {
 		case 'updateActiveAnswer':
 			state.questions[state.active].answer = action.payload;
 			state.questions[state.active] = { ...state.questions[state.active] };
-			if (state.questions[state.active].fields.type == 'F') {
+			if ([ 'F', 'D' ].includes(state.questions[state.active].fields.type)) {
 				if (state.questions[state.active].answer == '') {
 					state.questions[state.active].state[1] = 0;
-				} else state.questions[state.active].state[1] = 1;
-			} else if (
-				state.questions[state.active].fields.type == 'O' ||
-				state.questions[state.active].fields.type == 'M'
-			) {
-				console.log(state.questions[state.active].answer.join(''));
-				console.log('OM');
+				} else {
+					console.log('Working----------');
+					state.questions[state.active].state[1] = 1;
+				}
+			} else if ([ 'O', 'M', 'ON', 'MP', 'MN', 'MNP' ].includes(state.questions[state.active].fields.type)) {
 				if (state.questions[state.active].answer.join('') == '0000') {
 					state.questions[state.active].state[1] = 0;
 				} else state.questions[state.active].state[1] = 1;
@@ -32,6 +30,7 @@ const Test = (state = { active: -1, questions: [], fields: {} }, action) => {
 		case 'markForLater':
 			state.questions[state.active].state[2] = (state.questions[state.active].state[2] + 1) % 2;
 			state.questions[state.active].changed = 1; //raising the changed falg to 1 for sending the data over ws
+			break;
 		case 'submitted': //used afetr submtting to update marks for each question
 			console.log('payload for submtted: ', action.payload);
 			state.questions = state.questions.map((question, index) => {

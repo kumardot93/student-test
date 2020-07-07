@@ -6,15 +6,7 @@ export function updateTestData(data) {
 		data.answer = '';
 		data.state = [ 0, 0, 0 ]; //[0] is for visited at, [1] is for answered and [2] is for mared
 		data.changed = 0;
-		if (
-			data.fields.type === 'O' ||
-			data.fields.type === 'M' ||
-			data.fields.type === 'ON' ||
-			data.fields.type === 'MP' ||
-			data.fields.type === 'MN' ||
-			data.fields.type === 'MPN'
-		)
-			data.answer = [ 0, 0, 0, 0 ];
+		if ([ 'O', 'M', 'ON', 'MP', 'MN', 'MNP' ].includes(data.fields.type)) data.answer = [ 0, 0, 0, 0 ];
 		return data;
 	});
 	data['questions'] = Object.assign([], questions);
