@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import styles from './css/Initial.module.css';
 
 import { connect } from 'react-redux';
-import Question from './Question';
+import { addToDataBuffer } from './../../redux/actions/SocketState.js';
 
 class Initial extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			marks: 0 //For storing total marks
+			marks: 0, //For storing total marks
+			btnSpinner: 'none'
 		};
+		this.enterBtn = null;
 	}
 
 	static getDerivedStateFromProps = (props, state) => {
@@ -30,11 +32,28 @@ class Initial extends Component {
 					{this.props.description}
 				</p>
 				<button
-					onClick={(ev) => this.props.enter(1)}
+					ref={(el) => (this.enterBtn = el)}
+					onClick={() => {
+						this.setState({ btnSpinner: '' });
+						if (this.props.socketStatus === 'connected') {
+							this.props.enter(1);
+							this.props.addToDataBuffer(JSON.stringify({ type: 'enter' }));
+							// document.body.requestFullscreen();
+						} else {
+							setTimeout(() => {
+								//To click the button every 2 seconds till the data is not fetched
+								this.enterBtn.click();
+							}, 5000);
+						}
+					}}
 					className="btn btn-success m-4 pl-4 pr-4 m-auto"
 					style={{ display: this.props.display }}
 				>
 					Enter
+					<span
+						className="ml-2 spinner-border spinner-border-sm"
+						style={{ display: this.state.btnSpinner }}
+					/>
 				</button>
 				<div className="mt-4" id={styles.details}>
 					<span>Total Marks: {this.state.marks}</span>
@@ -88,13 +107,19 @@ class Initial extends Component {
 }
 
 const mapStateToProps = (state) => {
-	console.log('redux: ', state);
 	return {
 		title: state.Test.fields ? state.Test.fields.title : '',
 		description: state.Test.fields ? state.Test.fields.description : '',
 		questions: state.Test.questions,
-		testData: state.Test.fields
+		testData: state.Test.fields,
+		socketStatus: state.SocketState.status
 	};
 };
 
-export default connect(mapStateToProps)(Initial);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		addToDataBuffer: (data) => dispatch(addToDataBuffer(data))
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Initial);

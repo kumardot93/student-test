@@ -27,11 +27,19 @@ const Test = (state = { active: -1, questions: [], fields: {} }, action) => {
 					state.questions[state.active].state[1] = 0;
 				} else state.questions[state.active].state[1] = 1;
 			}
+			state.questions[state.active].changed = 1; //raising the changed falg to 1 for sending the data over ws
 			break;
 		case 'markForLater':
 			state.questions[state.active].state[2] = (state.questions[state.active].state[2] + 1) % 2;
-		case 'updateQuestions':
-			state.questions = [ ...action.payload ];
+			state.questions[state.active].changed = 1; //raising the changed falg to 1 for sending the data over ws
+		case 'submitted': //used afetr submtting to update marks for each question
+			console.log('payload for submtted: ', action.payload);
+			state.questions = state.questions.map((question, index) => {
+				return {
+					...question,
+					marks: action.payload[index]
+				};
+			});
 			console.log('state after saving', state);
 			break;
 		default:

@@ -6,14 +6,18 @@ import Result from './result.js';
 import { extractKey } from './../../SocketManager.js';
 
 import { connect } from 'react-redux';
-import { updateTestData } from './../../redux/actions/Test.js';
+import { setScreenFunction } from './../../redux/actions/SocketState.js';
 
 //Entry point for the main body
 class Main extends Component {
 	//fetching and saving the test data
-	state = {
-		enter: 0 //Determines what to render to the main body
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			enter: 0 //Determines what to render to the main body
+		};
+		this.props.setScreenFunction(this.enter);
+	}
 	// fetchData = (key) => {
 	// 	//fetches all the test data at once
 	// 	fetch(window.base + '/material/api/test/data/' + key + '/', { credentials: window.cred })
@@ -72,7 +76,7 @@ const mapStateToProps = null;
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateTestData: (data) => dispatch(updateTestData(data)) //to store the fetched test data
+		setScreenFunction: (func) => dispatch(setScreenFunction(func))
 	};
 };
 

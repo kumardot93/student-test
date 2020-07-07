@@ -5,7 +5,7 @@ import QuestionsBtns from './QuestionsBtns.js';
 import Timer from './Timer.js';
 
 import { connect } from 'react-redux';
-import { updateQuestion } from './../../redux/actions/Test.js';
+import { addToDataBuffer } from './../../redux/actions/SocketState.js';
 
 //Side bar or the container of the question buttons also the entry point for the qustion body
 class Sidebar extends Component {
@@ -32,7 +32,8 @@ class Sidebar extends Component {
 		if (this.props.submitted === 1) {
 			this.props.enter(2);
 		} else {
-			let res = this.props.questions.map((data, index) => {
+			let marks_list = [];
+			this.props.questions.forEach((data, index) => {
 				let m = 0;
 				switch (data.fields.type) {
 					case 'F':
@@ -62,20 +63,10 @@ class Sidebar extends Component {
 						m.toFixed(2);
 						break;
 				}
-
-				return { ...data, marks: m };
+				marks_list = [ ...marks_list, m ];
 			});
-			this.props.updateQuestion(res);
-			console.log(res);
-			let form = new FormData();
-			form.append('response', JSON.stringify(res));
-			fetch(window.base + '/material/api/test/saveResponse/' + this.props.pk + '/', {
-				method: 'POST',
-				credentials: window.cred,
-				body: form
-			})
-				.then(() => this.props.enter(2))
-				.catch((err) => alert(err));
+			let res = { type: 'submit', marks: marks_list };
+			this.props.addToDataBuffer(JSON.stringify(res));
 		}
 		this.setState({ btnSpinner: 'none' });
 	};
@@ -123,7 +114,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateQuestion: (data) => dispatch(updateQuestion(data))
+		addToDataBuffer: (data) => dispatch(addToDataBuffer(data))
 	};
 };
 

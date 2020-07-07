@@ -1,10 +1,11 @@
 import store from './../Store.js';
-import { addToBuffer, addToDataBuffer } from './SocketState.js';
+import { addToQuestionBuffer } from './SocketState.js';
 
 export function updateTestData(data) {
 	let questions = data.questions.map((data) => {
 		data.answer = '';
 		data.state = [ 0, 0, 0 ]; //[0] is for visited at, [1] is for answered and [2] is for mared
+		data.changed = 0;
 		if (
 			data.fields.type === 'O' ||
 			data.fields.type === 'M' ||
@@ -24,23 +25,31 @@ export function updateTestData(data) {
 	};
 }
 
-// export function AddingToBuffer() {
-// 	let test = store.getState().Test;
-// 	if (test.active !== -1)
-// 		if (test.questions[test.active].changed === 1) {
-// 			store.dispatch(addToBuffer(test.active));
-// 			return;
-// 		}
-// 	//Push the index of the last active question to the buffer of Socket State if there is any change
-// 	if (test.active === -1 && test.changed === 1) {
-// 		let dict = { type: 'testUpdate', payload: { title: test.fields.title, description: test.fields.description } };
-// 		dict = JSON.stringify(dict);
-// 		store.dispatch(addToDataBuffer(dict));
-// 	}
-// }
+export function updateTestDataForReconnected(data) {
+	let questions = data.questions.map((data) => {
+		data.changed = 0;
+		return data;
+	});
+	data.questions = Object.assign([], questions);
+	data.active = -1;
+	return {
+		type: 'updateTestData',
+		payload: data
+	};
+}
+
+export function AddToBuffer() {
+	let test = store.getState().Test;
+	if (test.active !== -1) {
+		if (test.questions[test.active].changed === 1) {
+			store.dispatch(addToQuestionBuffer(test.active));
+			return;
+		}
+	}
+}
 
 export function updateActive(index) {
-	// AddingToBuffer();
+	AddToBuffer();
 	return {
 		type: 'updateActive',
 		payload: index
@@ -61,9 +70,9 @@ export function markForLater() {
 	};
 }
 
-export function updateQuestion(data) {
+export function submitted(marks) {
 	return {
-		type: 'updateQuestions',
-		payload: data
+		type: 'submitted',
+		payload: marks
 	};
 }
