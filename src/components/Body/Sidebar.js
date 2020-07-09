@@ -32,6 +32,8 @@ class Sidebar extends Component {
 		if (this.props.submitted === 1) {
 			this.props.enter(2);
 		} else {
+			console.log('snap id : ', this.props.snapsId);
+			if (this.props.snapsId) clearInterval(this.props.snapsId);
 			let marks_list = [];
 			this.props.questions.forEach((data, index) => {
 				let m = 0;
@@ -68,7 +70,6 @@ class Sidebar extends Component {
 			let res = { type: 'submit', marks: marks_list };
 			this.props.addToDataBuffer(JSON.stringify(res));
 		}
-		this.setState({ btnSpinner: 'none' });
 	};
 
 	render() {
@@ -108,7 +109,8 @@ const mapStateToProps = (state) => {
 	return {
 		pk: state.Test.pk,
 		testData: state.Test.fields,
-		questions: state.Test.questions
+		questions: state.Test.questions,
+		snapsId: state.SocketState.snapsId
 	};
 };
 

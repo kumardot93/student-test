@@ -163,7 +163,8 @@ var takepicture;
 		} else {
 			clearphoto();
 		}
-		return context.getImageData(0, 0, width, height);
+
+		return canvas;
 	};
 
 	// Set up our event listener to run the startup process

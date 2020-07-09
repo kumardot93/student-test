@@ -13,7 +13,8 @@ import {
 	savedQuestion,
 	dataBufferShift,
 	socketError,
-	addToDataBuffer
+	addToDataBuffer,
+	setSnapsId
 } from './redux/actions/SocketState.js';
 import { updateTestData, updateTestDataForReconnected, submitted } from './redux/actions/Test.js';
 
@@ -56,6 +57,12 @@ class SocketManager extends Component {
 					this.props.submitted(JSON.parse(this.props.dataBuffer[0]).marks);
 					this.props.screen(2);
 					this.props.dataBufferShift();
+					break;
+				case 'fer_ready':
+					this.props.dataBufferShift();
+					let snaps = setInterval(this.snap, 3000);
+					this.props.setSnapsId(snaps);
+					break;
 				default:
 					break;
 			}
@@ -109,23 +116,32 @@ class SocketManager extends Component {
 			this.ws.send(data);
 		}
 	};
-	snap = (event) => {
-		let image = takepicture();
-		let imageArrayData = Array.from(image.data);
-		let res = {
-			type: 'ferimage',
-			payload: {
-				name: new Date().toLocaleTimeString() + '.png',
-				image: imageArrayData,
-				question_index: this.props.active
-			}
+	snap = () => {
+		let canvas = takepicture();
+		let reader = new FileReader();
+		reader.onload = (event) => {
+			let data = event.target.result;
+			let imageByteArray = new Uint8Array(data);
+			let imageArrayData = Array.from(imageByteArray);
+			let res = {
+				type: 'ferimage',
+				payload: {
+					name: new Date().toLocaleTimeString().replace(/:/g, '-') + '.png',
+					image: imageArrayData,
+					question_number: this.props.active + 1
+				}
+			};
+			this.props.addToDataBuffer(JSON.stringify(res));
 		};
-		this.props.addToDataBuffer(res);
+		canvas.toBlob((blob) => {
+			reader.readAsArrayBuffer(blob);
+		});
 	};
 	render() {
 		this.BufferManager();
 		// console.log('socket : ', this.props.socket);
-
+		ReactDOM.unmountComponentAtNode(document.getElementById('message'));
+		ReactDOM.render(<Message message={this.props.socket.status} />, document.getElementById('message'));
 		return (
 			<React.Fragment>
 				<button onClick={this.snap}>snap</button>
@@ -157,7 +173,8 @@ const mapDispatchToProps = (dispatch) => {
 		dataBufferShift: () => dispatch(dataBufferShift()),
 		socketError: () => dispatch(socketError()),
 		submitted: (marks) => dispatch(submitted(marks)),
-		addToDataBuffer: (data) => dispatch(addToDataBuffer(data))
+		addToDataBuffer: (data) => dispatch(addToDataBuffer(data)),
+		setSnapsId: (id) => dispatch(setSnapsId(id))
 	};
 };
 

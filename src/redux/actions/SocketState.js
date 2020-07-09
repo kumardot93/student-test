@@ -69,3 +69,10 @@ export function setScreenFunction(func) {
 		payload: func
 	};
 }
+
+export function setSnapsId(id) {
+	return {
+		type: 'setSnapsId',
+		payload: id
+	};
+}

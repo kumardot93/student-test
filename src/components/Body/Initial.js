@@ -35,7 +35,7 @@ class Initial extends Component {
 					ref={(el) => (this.enterBtn = el)}
 					onClick={() => {
 						this.setState({ btnSpinner: '' });
-						if (this.props.socketStatus === 'connected') {
+						if ([ 'connected', 'saving', 'saved' ].includes(this.props.socketStatus)) {
 							this.props.enter(1);
 							this.props.addToDataBuffer(JSON.stringify({ type: 'enter' }));
 							// document.body.requestFullscreen();
@@ -55,6 +55,27 @@ class Initial extends Component {
 						style={{ display: this.state.btnSpinner }}
 					/>
 				</button>
+				<div class="custom-control custom-switch m-4">
+					<input
+						type="checkbox"
+						class="custom-control-input"
+						id="customSwitch1"
+						value="fer"
+						onChange={(event) => {
+							let res = null;
+							if (event.target.checked) {
+								res = { type: 'initilizeFER' };
+								this.props.addToDataBuffer(JSON.stringify(res));
+							} else {
+								res = { type: 'closeFER' };
+								this.props.addToDataBuffer(JSON.stringify(res));
+							}
+						}}
+					/>
+					<label class="custom-control-label" for="customSwitch1">
+						Expression Analyser
+					</label>
+				</div>
 				<div className="mt-4" id={styles.details}>
 					<span>Total Marks: {this.state.marks}</span>
 					<br />
@@ -112,7 +133,8 @@ const mapStateToProps = (state) => {
 		description: state.Test.fields ? state.Test.fields.description : '',
 		questions: state.Test.questions,
 		testData: state.Test.fields,
-		socketStatus: state.SocketState.status
+		socketStatus: state.SocketState.status,
+		snapsId: state.SocketState.snapsId
 	};
 };
 

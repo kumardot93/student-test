@@ -1,5 +1,13 @@
 const SocketState = (
-	state = { socket: null, status: 'connecting', questionBuffer: [], dataBuffer: [], isready: 0, screen: null },
+	state = {
+		socket: null,
+		status: 'connecting',
+		questionBuffer: [],
+		dataBuffer: [],
+		isready: 0,
+		screen: null,
+		snapsId: null
+	},
 	action
 ) => {
 	state = { ...state };
@@ -41,6 +49,9 @@ const SocketState = (
 			break;
 		case 'setScreenFunction':
 			state.screen = action.payload;
+			break;
+		case 'setSnapsId':
+			state.snapsId = action.payload;
 			break;
 
 		default:
