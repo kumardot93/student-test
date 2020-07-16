@@ -46,7 +46,15 @@ class QuestionsBtns extends Component {
 			<div className={[ 'd-block m-1', styles.qBtnsCont ].join(' ')}>
 				<div
 					className={[ 'align-items-stretch', this.props.menuDisplay, styles.bottomNav ].join(' ')}
-					style={this.props.submitted ? {} : { top: '55px', height: 'calc(100vh - 88px)' }}
+					style={
+						document.body.clientWidth < 950 ? this.props.submitted ? ( //Sizing and placement for the side bar
+							{}
+						) : (
+							{ top: '55px', height: 'calc(100vh - 88px)' }
+						) : (
+							{}
+						)
+					}
 				>
 					<button
 						className={[ 'btn m-1', -1 === this.props.active ? 'btn-primary' : 'btn-light' ].join(' ')}
@@ -56,7 +64,7 @@ class QuestionsBtns extends Component {
 					>
 						Test Description
 					</button>
-					<button className={[ 'btn m-1', 'btn-light' ].join(' ')} disabled={true}>
+					<button className={[ 'btn m-1', 'btn-light', 'd-none' ].join(' ')} disabled={true}>
 						Camera
 					</button>
 					<button className={[ 'btn m-1', 'btn-light' ].join(' ')} disabled={true}>
