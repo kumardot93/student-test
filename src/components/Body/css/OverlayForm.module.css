@@ -36,7 +36,7 @@ p {
 	position: absolute;
 	left: 10vw;
 	top: 10vh;
-	width: 80vw;
+	width: 60vw;
 	height: 80vh;
 	max-height: 110vw;
 	z-index: 2;
@@ -92,5 +92,8 @@ p {
 	#overlaymain {
 		width: 84vw;
 		left: 8vw;
+	}
+	#overlaymain h1 {
+		font-size: 12.5vw;
 	}
 }

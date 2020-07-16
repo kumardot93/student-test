@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Message from './components/Message.js';
+import Guidelins from './components/Body/Guideline.js';
 import { takepicture, stopVideo } from './index.js';
 import VideoInput from './VideoSupport.js';
 
@@ -44,6 +45,9 @@ class SocketManager extends Component {
 			switch (msg.type) {
 				case 'connected':
 					this.props.updateTestData(msg.TestData);
+					let overlay = document.getElementById('overlay');
+					overlay.style.display = 'block';
+					ReactDOM.render(<Guidelins />, overlay);
 					this.props.socketConnected();
 					break;
 				case 'reconnected':

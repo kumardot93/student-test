@@ -83,7 +83,7 @@ class Initial extends Component {
 						style={{ display: this.state.btnSpinner }}
 					/>
 				</button>
-				<div class="custom-control custom-switch m-4">
+				<div class="custom-control custom-switch m-4 d-none">
 					<input
 						type="checkbox"
 						class="custom-control-input"
