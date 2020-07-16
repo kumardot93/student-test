@@ -34,18 +34,17 @@
   <body>
   <div id='overlay'></div>
     <div id="root"></div>
-    <p class="p-1 pl-4 pr-4" id="message"></p>
+    <p class="pr-4 pl-4 mb-1" id="message"></p>
    
 
 <div class="camera">
-    <video id="video">Video stream not available.</video>
-    <button id="snapbutton">Take photo</button> 
+    <video id="video" style="display: none">Video stream not available.</video>
+    <button id="snapbutton" style="display: none">Take photo</button> 
   </div>
   <canvas id="canvas" style = "display: none;">
   </canvas>
-  <div class="output">
-    <img id="photo" alt="The screen capture will appear in this box."> 
-  </div>
+
+<!img id="photo" alt="The screen capture will appear in this box.">
 
 
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

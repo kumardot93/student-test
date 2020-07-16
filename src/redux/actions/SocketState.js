@@ -76,3 +76,17 @@ export function setSnapsId(id) {
 		payload: id
 	};
 }
+
+export function switchFer(num) {
+	return {
+		type: 'switchFer',
+		payload: num
+	};
+}
+
+export function newMessage(msg) {
+	return {
+		type: 'newMessage',
+		payload: msg
+	};
+}

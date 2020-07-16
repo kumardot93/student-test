@@ -26,7 +26,16 @@ class Choices extends Component {
 			<React.Fragment>
 				<div className={[ 'p-0 d-flex w-100', styles.choicesCont ].join(' ')}>
 					<div className={[ 'p-0 d-flex w-100 align-items-baseline', styles.choicesCont ].join(' ')}>
-						<div className="form-check mt-4 ml-4 pl-4">
+						<div
+							className="form-check mt-4 ml-4 pl-4"
+							style={
+								this.props.choices[0] === undefined || this.props.choices[0] === '' ? ( //Display = none if choice  === '' or undefined
+									{ display: 'none' }
+								) : (
+									{}
+								)
+							}
+						>
 							<input
 								className="form-check-input"
 								type="radio"
@@ -39,7 +48,16 @@ class Choices extends Component {
 						</div>
 					</div>
 					<div className={[ 'p-0 d-flex w-100 align-items-baseline', styles.choicesCont ].join(' ')}>
-						<div className="form-check mt-4 ml-4 pl-4">
+						<div
+							className="form-check mt-4 ml-4 pl-4"
+							style={
+								this.props.choices[1] === undefined || this.props.choices[1] === '' ? (
+									{ display: 'none' }
+								) : (
+									{}
+								)
+							}
+						>
 							<input
 								className="form-check-input"
 								type="radio"
@@ -54,7 +72,16 @@ class Choices extends Component {
 				</div>
 				<div className={[ 'p-0 d-flex w-100', styles.choicesCont ].join(' ')}>
 					<div className={[ 'p-0 d-flex w-100 align-items-baseline', styles.choicesCont ].join(' ')}>
-						<div className="form-check mt-4 ml-4 pl-4">
+						<div
+							className="form-check mt-4 ml-4 pl-4"
+							style={
+								this.props.choices[2] === undefined || this.props.choices[2] === '' ? (
+									{ display: 'none' }
+								) : (
+									{}
+								)
+							}
+						>
 							<input
 								className="form-check-input"
 								type="radio"
@@ -67,7 +94,16 @@ class Choices extends Component {
 						</div>
 					</div>
 					<div className={[ 'p-0 d-flex w-100 align-items-baseline', styles.choicesCont ].join(' ')}>
-						<div className="form-check mt-4 ml-4 pl-4">
+						<div
+							className="form-check mt-4 ml-4 pl-4"
+							style={
+								this.props.choices[3] === undefined || this.props.choices[3] === '' ? (
+									{ display: 'none' }
+								) : (
+									{}
+								)
+							}
+						>
 							<input
 								className="form-check-input"
 								type="radio"

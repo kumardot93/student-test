@@ -5,6 +5,8 @@ const SocketState = (
 		questionBuffer: [],
 		dataBuffer: [],
 		isready: 0,
+		fer: 0,
+		message: { code: null, message: '' },
 		screen: null,
 		snapsId: null
 	},
@@ -53,7 +55,21 @@ const SocketState = (
 		case 'setSnapsId':
 			state.snapsId = action.payload;
 			break;
-
+		case 'switchFer':
+			console.log('swicth fer called, with value: ', action.payload);
+			state.fer = action.payload;
+			if (state.fer === 1) {
+				console.log('changing block is running');
+				state.message = {
+					code: 'FER_READY',
+					message: 'Fer Engine Started'
+				};
+				console.log('afetr change message is : ', state.message);
+			}
+			break;
+		case 'newMessage':
+			state.message = { ...action.payload };
+			break;
 		default:
 			break;
 	}

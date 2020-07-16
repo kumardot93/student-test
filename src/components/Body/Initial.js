@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import SetVideoInput from './SetViideoInput.js';
 import styles from './css/Initial.module.css';
+import VideoInput from './../../VideoSupport.js';
 
-import { connect } from 'react-redux';
-import { addToDataBuffer } from './../../redux/actions/SocketState.js';
+import { connect, Provider } from 'react-redux';
+import { addToDataBuffer, switchFer } from './../../redux/actions/SocketState.js';
+import { updateActive } from './../../redux/actions/Test.js';
+import Store from './../../redux/Store.js';
 
 class Initial extends Component {
 	constructor(props) {
@@ -24,9 +29,31 @@ class Initial extends Component {
 		};
 	};
 
+	ferManager = (event) => {
+		//manages turning on and off of FER engine
+		let res;
+		if (!this.props.fer) {
+			document.getElementById('overlay').style.display = 'block';
+			ReactDOM.render(
+				//Renders SetVideoInput(Overlay form ) for initilizing FER engine
+				<Provider store={Store}>
+					<SetVideoInput addToDataBuffer={this.props.addToDataBuffer} message={this.props.message} />
+				</Provider>,
+				document.getElementById('overlay')
+			);
+			// res = { type: 'initilizeFER' };
+			// this.props.addToDataBuffer(JSON.stringify(res));
+		} else {
+			VideoInput.stopVideo(); //Stops webcam
+			res = { type: 'closeFER' };
+			this.props.addToDataBuffer(JSON.stringify(res)); //Sends request over web socket to backend for stopping disconnecting fer engine
+			this.props.switchFer(0); //Switches fer state from Socketstate back to 0; 0: fer off, 1: fer onn
+		}
+	};
+
 	render() {
 		return (
-			<div id={styles.entry} className="p-2 bg-light">
+			<div id={styles.entry} className="p-2 bg-light pb-4">
 				<h1 className="text-center">{this.props.title}</h1>
 				<p className="text-center" id={styles.desc}>
 					{this.props.description}
@@ -37,6 +64,7 @@ class Initial extends Component {
 						this.setState({ btnSpinner: '' });
 						if ([ 'connected', 'saving', 'saved' ].includes(this.props.socketStatus)) {
 							this.props.enter(1);
+							this.props.updateActive(0);
 							this.props.addToDataBuffer(JSON.stringify({ type: 'enter' }));
 							// document.body.requestFullscreen();
 						} else {
@@ -61,16 +89,8 @@ class Initial extends Component {
 						class="custom-control-input"
 						id="customSwitch1"
 						value="fer"
-						onChange={(event) => {
-							let res = null;
-							if (event.target.checked) {
-								res = { type: 'initilizeFER' };
-								this.props.addToDataBuffer(JSON.stringify(res));
-							} else {
-								res = { type: 'closeFER' };
-								this.props.addToDataBuffer(JSON.stringify(res));
-							}
-						}}
+						checked={this.props.fer}
+						onChange={this.ferManager}
 					/>
 					<label class="custom-control-label" for="customSwitch1">
 						Expression Analyser
@@ -134,13 +154,17 @@ const mapStateToProps = (state) => {
 		questions: state.Test.questions,
 		testData: state.Test.fields,
 		socketStatus: state.SocketState.status,
-		snapsId: state.SocketState.snapsId
+		snapsId: state.SocketState.snapsId,
+		fer: state.SocketState.fer,
+		message: state.SocketState.message
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		addToDataBuffer: (data) => dispatch(addToDataBuffer(data))
+		addToDataBuffer: (data) => dispatch(addToDataBuffer(data)),
+		switchFer: (num) => dispatch(switchFer(num)),
+		updateActive: (index) => dispatch(updateActive(index))
 	};
 };
 

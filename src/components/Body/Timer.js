@@ -19,7 +19,7 @@ class Timer extends Component {
 		let minutes = Math.floor(sec / 60);
 		sec = sec % 60;
 		if (this.state.left > 0) setTimeout(() => this.setState({ left: this.state.duration - passed }), 1000);
-		else this.props.submit.click();
+		else this.props.submit();
 		return (
 			<h5 id={styles.timer}>
 				Time: {minutes} : {sec}

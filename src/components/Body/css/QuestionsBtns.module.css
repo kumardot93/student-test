@@ -1,20 +1,108 @@
-#qBtnsCont {
+.qBtnsCont {
+	position: relative;
 	height: calc(100% - 45px);
+	overflow-y: auto;
+	padding-bottom: 30px;
 }
 
-.btns:active {
-	/* background-color: lightblue; */
+.btns {
 	font-size: large;
-	color: white;
-	box-shadow: 0 0 4px black;
+	min-height: 48px;
+	min-width: 48px;
+}
+
+.bottomNav {
+	margin-left: 0;
+	position: absolute;
+	top: -2px;
+	height: 100%;
+	width: 100%;
+	flex-direction: column;
+	white-space: normal;
+	overflow-x: hidden;
+	overflow-y: auto;
+	box-shadow: 0 0 6px white;
+	padding: 2px;
+	background-color: rgba(0, 0, 0, 0.65);
+	border-radius: 5px;
+	z-index: 20;
+}
+.bottomNav button {
+	white-space: nowrap;
+}
+
+.btnNavDef {
+	display: none;
+	animation: slideApearLeft 0.4s;
+}
+
+.btnNavRem {
+	transform: scaleX(0);
+	animation: slideDisapearRight 0.4s;
+}
+
+@keyframes slideApearLeft {
+	0% {
+		width: 0;
+		transform: translateX(-20px);
+	}
+	100% {
+	}
+}
+@keyframes slideDisapearRight {
+	0% {
+		width: 100%;
+		transform: scaleX(1);
+	}
+	40% {
+		transform: translateX(0);
+	}
+	99% {
+		width: 0;
+		transform: scaleX(1) translateX(-20px);
+	}
+	100% {
+		transform: scaleX(0);
+	}
+}
+
+.active {
+	box-shadow: 0 0 10px black;
+	transform: scale(1.15);
 }
 
 @media only screen and (max-width: 950px) {
-	#qBtnsCont {
-		display: flex;
-		flex-direction: row;
+	.qBtnsCont {
 		overflow-x: auto;
-		overflow-y: hidden;
-		align-items: center;
+		overflow-y: visible;
+		height: 60px;
+		white-space: nowrap;
+		width: 100%;
+		padding-bottom: 0;
+	}
+
+	.bottomNav {
+		width: 60vw;
+		position: fixed;
+		top: 115px;
+		left: 10px;
+		height: calc(100vh - 130px);
+	}
+
+	@keyframes slideDisapearRight {
+		0% {
+			width: 60vw;
+			transform: scaleX(1);
+		}
+		40% {
+			transform: translateX(0);
+		}
+		99% {
+			width: 0;
+			transform: scaleX(1) translateX(-20px);
+		}
+		100% {
+			transform: scaleX(0);
+		}
 	}
 }

@@ -28,35 +28,27 @@ body {
 }
 
 #message {
+	margin: 0;
 	position: fixed;
-	bottom: -4px;
+	bottom: 0;
 	right: 8px;
 	height: fit-content;
-	max-height: 22px;
+	max-height: 30px;
 	max-width: 70vw;
 	font-size: 18px;
-	/* display: none; */
-	animation: msg 10s;
-	border-radius: 4px;
+	border-radius: 5px;
+	background-color: silver;
 }
 
-@keyframes msg {
-	0% {
-		opacity: 0;
-	}
-	5% {
-		opacity: 1;
-	}
-	82% {
-		opacity: 1;
-	}
-	100% {
-		opacity: 0;
-	}
+.camera {
+	position: fixed;
+	bottom: 2px;
+	left: 2px;
 }
 
 @media only screen and (max-width: 900px) {
 	#message {
 		font-size: 10px;
+		border-radius: 3px;
 	}
 }

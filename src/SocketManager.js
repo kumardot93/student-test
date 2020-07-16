@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Message from './components/Message.js';
-import { takepicture } from './index.js';
+import { takepicture, stopVideo } from './index.js';
+import VideoInput from './VideoSupport.js';
 
 import store from './redux/Store.js';
 import { connect } from 'react-redux';
@@ -14,7 +15,9 @@ import {
 	dataBufferShift,
 	socketError,
 	addToDataBuffer,
-	setSnapsId
+	setSnapsId,
+	switchFer,
+	newMessage
 } from './redux/actions/SocketState.js';
 import { updateTestData, updateTestDataForReconnected, submitted } from './redux/actions/Test.js';
 
@@ -60,7 +63,11 @@ class SocketManager extends Component {
 					break;
 				case 'fer_ready':
 					this.props.dataBufferShift();
-					let snaps = setInterval(this.snap, 3000);
+					this.props.switchFER(1);
+					let snaps = setInterval(() => {
+						VideoInput.takepicture();
+						VideoInput.SendSnap();
+					}, 3000);
 					this.props.setSnapsId(snaps);
 					break;
 				default:
@@ -81,6 +88,10 @@ class SocketManager extends Component {
 				this.props.disconnected(); //Socket state to reconecting
 				setTimeout(this.NewWebSocket, 5000);
 			} else {
+				this.props.newMessage({
+					code: 'SOCKET_ERROR',
+					message: 'Connection Error'
+				});
 				this.props.socketError(); //Error msg for scoket state
 				this.error = 1; //To try for connection for 4 time also not 0 otherwise onclose will alsotrigerred and infinite loop will be trigered
 				if (!navigator.onLine) {
@@ -97,8 +108,8 @@ class SocketManager extends Component {
 		this.NewWebSocket();
 	};
 	BufferManager = () => {
-		let questions = store.getState().Test.questions;
 		if (this.props.isready === 0) return;
+		let questions = store.getState().Test.questions;
 		if (this.props.questionBuffer.length !== 0) {
 			let qstn = questions[this.props.questionBuffer[0]];
 			let [ answer, state ] = [ qstn.answer, qstn.state ];
@@ -116,37 +127,11 @@ class SocketManager extends Component {
 			this.ws.send(data);
 		}
 	};
-	snap = () => {
-		let canvas = takepicture();
-		let reader = new FileReader();
-		reader.onload = (event) => {
-			let data = event.target.result;
-			let imageByteArray = new Uint8Array(data);
-			let imageArrayData = Array.from(imageByteArray);
-			let res = {
-				type: 'ferimage',
-				payload: {
-					name: new Date().toLocaleTimeString().replace(/:/g, '-') + '.png',
-					image: imageArrayData,
-					question_number: this.props.active + 1
-				}
-			};
-			this.props.addToDataBuffer(JSON.stringify(res));
-		};
-		canvas.toBlob((blob) => {
-			reader.readAsArrayBuffer(blob);
-		});
-	};
+
 	render() {
 		this.BufferManager();
 		// console.log('socket : ', this.props.socket);
-		ReactDOM.unmountComponentAtNode(document.getElementById('message'));
-		ReactDOM.render(<Message message={this.props.socket.status} />, document.getElementById('message'));
-		return (
-			<React.Fragment>
-				<button onClick={this.snap}>snap</button>
-			</React.Fragment>
-		);
+		return <React.Fragment />;
 	}
 }
 
@@ -174,7 +159,9 @@ const mapDispatchToProps = (dispatch) => {
 		socketError: () => dispatch(socketError()),
 		submitted: (marks) => dispatch(submitted(marks)),
 		addToDataBuffer: (data) => dispatch(addToDataBuffer(data)),
-		setSnapsId: (id) => dispatch(setSnapsId(id))
+		setSnapsId: (id) => dispatch(setSnapsId(id)),
+		switchFER: (val) => dispatch(switchFer(val)),
+		newMessage: (msg) => dispatch(newMessage(msg))
 	};
 };
 

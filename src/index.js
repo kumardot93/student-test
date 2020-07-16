@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Message from './components/Message.js';
+
 import Store from './redux/Store.js';
 import { Provider } from 'react-redux';
 import SocketManager from './SocketManager.js';
@@ -20,6 +22,13 @@ ReactDOM.render(
 	document.getElementById('root')
 );
 
+ReactDOM.render(
+	<Provider store={Store}>
+		<Message />
+	</Provider>,
+	document.getElementById('message')
+);
+
 // var ws = new WebSocket('ws://' + window.host + '/ws/material/testMaker/');
 // export { ws };
 
@@ -29,8 +38,9 @@ ReactDOM.render(
 //serviceWorker.unregister();
 
 var takepicture;
+var stopVideo;
 
-(function() {
+function avc() {
 	// The width and height of the captured photo. We will set the
 	// width to the value defined here, but the height will be
 	// calculated based on the aspect ratio of the input stream.
@@ -102,6 +112,11 @@ var takepicture;
 		clearphoto();
 	}
 
+	stopVideo = () => {
+		video.pause();
+		video.srcObject = null;
+	};
+
 	// Fill the photo with an indication that none has been
 	// captured.
 
@@ -169,7 +184,8 @@ var takepicture;
 
 	// Set up our event listener to run the startup process
 	// once loading is complete.
-	window.addEventListener('load', startup, false);
-})();
+	// window.addEventListener('load', startup, false);
+}
 
 export { takepicture };
+export { stopVideo };

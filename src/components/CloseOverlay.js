@@ -3,7 +3,7 @@ import styles from './Body/css/OverlayForm.module.css';
 
 var CloseOverlay = (event, elid) => {
 	//function to close any activity with overlay
-	event.preventDefault();
+	if (event) event.preventDefault();
 
 	//appliying animation by changing styles id of the element
 	document.getElementById(elid).id = styles.unmount;

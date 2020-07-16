@@ -1,21 +1,20 @@
 #sidebarMain {
 	display: inline-block;
-	width: 20vw;
+	width: 19vw;
+	min-width: 274px;
 	height: stretch;
 	border-radius: 5px;
 	overflow-x: hidden;
 	overflow-y: auto;
-	background-color: #8f94fb;
 }
 
 #sideHead {
 	font-size: xx-large;
+	white-space: nowrap;
 }
 
 #addBtn {
-	/* background-color: transparent; */
 	border: none;
-	float: right;
 	transition: 0.3s;
 	font-size: small;
 	color: white;
@@ -26,13 +25,28 @@
 	transform: scale(1.05);
 }
 
+#menuBtn {
+	position: relative;
+	left: -6px;
+	display: inline-block;
+	background-color: transparent;
+	border: none;
+}
+
+#menuBtn:focus {
+	outline: none;
+}
+#menuBtn:hover {
+	transform: scale(1.05) translateY(-2px);
+}
 @media only screen and (max-width: 950px) {
 	#sidebarMain {
 		width: 98%;
 		height: auto;
-		min-height: 100px;
+		min-height: 110px;
 		max-height: 25vh;
 		margin-bottom: 4px;
-		overflow: hidden;
+		overflow-x: hidden;
+		overflow-y: visible;
 	}
 }
