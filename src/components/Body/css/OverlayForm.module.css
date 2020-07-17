@@ -34,14 +34,15 @@ p {
 
 #unmount {
 	position: absolute;
-	left: 10vw;
+	left: 20vw;
 	top: 10vh;
 	width: 60vw;
 	height: 80vh;
-	max-height: 110vw;
+	max-height: 125vw;
 	z-index: 2;
 	overflow: auto;
 	padding: 2vw;
+	box-shadow: 0 0 6px black;
 	animation-name: anim2;
 	animation-duration: 0.4s;
 }
@@ -92,6 +93,12 @@ p {
 	#overlaymain {
 		width: 84vw;
 		left: 8vw;
+		padding: 12px;
+	}
+	#unmount {
+		width: 84vw;
+		left: 8vw;
+		padding: 12px;
 	}
 	#overlaymain h1 {
 		font-size: 12.5vw;
