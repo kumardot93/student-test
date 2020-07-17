@@ -34,7 +34,7 @@ class SocketManager extends Component {
 		let scheme = 'wss://';
 		if (p == 'http:') scheme = 'ws://'; // adjusting for ws and wss
 		let key = extractKey();
-		this.ws = new WebSocket(scheme + window.hostName + '/ws/material/student-test/' + key + '/');
+		this.ws = new WebSocket(scheme + window.hostName + '/ws/studentTest/student-testSA/' + key + '/');
 		//When the socket wil open tis method will will send the socket to redux ScketState and initilize the backend will the test
 		this.ws.onopen = () => {
 			this.props.setSocket(this.ws);
