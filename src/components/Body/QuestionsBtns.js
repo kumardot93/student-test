@@ -8,40 +8,42 @@ class QuestionsBtns extends Component {
 	render() {
 		let questions = '';
 		//mapping question buttons from all the available question in redux state
-		questions = this.props.questions.map((data, index) => {
-			let state = data.state.join('');
-			let cls = '';
-			switch (state) {
-				case '100':
-					cls = 'btn-danger'; //if not answered
-					break;
-				case '010':
-				case '110':
-					cls = 'btn-success'; //if answered
-					break;
-				case '001':
-				case '101':
-					cls = 'btn-warning'; //if marked for later
-					break;
-				case '011':
-				case '111':
-					cls = 'btn-info'; //if answered and marked for later
-					break;
-				default:
-					cls = 'btn-dark'; //if unvisited
-			}
-			if (index === this.props.active) cls = [ 'btn-primary', styles.active ].join(' '); //if active
-			return (
-				<button
-					className={[ 'btn m-2', styles.btns, cls ].join(' ')}
-					key={index}
-					onClick={() => this.props.updateActive(index)}
-					//update active questin on change also push to buffer for sending to backend i there is any change se the corrosponding action in redux/action/Top.js
-				>
-					{index + 1}
-				</button>
-			);
-		});
+		if (Array.isArray(this.props.questions)) {
+			questions = this.props.questions.map((data, index) => {
+				let state = data.state.join('');
+				let cls = '';
+				switch (state) {
+					case '100':
+						cls = 'btn-danger'; //if not answered
+						break;
+					case '010':
+					case '110':
+						cls = 'btn-success'; //if answered
+						break;
+					case '001':
+					case '101':
+						cls = 'btn-warning'; //if marked for later
+						break;
+					case '011':
+					case '111':
+						cls = 'btn-info'; //if answered and marked for later
+						break;
+					default:
+						cls = 'btn-dark'; //if unvisited
+				}
+				if (index === this.props.active) cls = [ 'btn-primary', styles.active ].join(' '); //if active
+				return (
+					<button
+						className={[ 'btn m-2', styles.btns, cls ].join(' ')}
+						key={index}
+						onClick={() => this.props.updateActive(index)}
+						//update active questin on change also push to buffer for sending to backend i there is any change se the corrosponding action in redux/action/Top.js
+					>
+						{index + 1}
+					</button>
+				);
+			});
+		}
 		return (
 			<div className={[ 'd-block m-1', styles.qBtnsCont ].join(' ')}>
 				<div

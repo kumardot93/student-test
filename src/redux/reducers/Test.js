@@ -7,7 +7,13 @@ const Test = (state = { active: -1, questions: [], fields: {} }, action) => {
 
 		case 'updateActive':
 			state.active = action.payload;
-			if (state.active != -1) state.questions[state.active].state[0] = 1;
+			if (state.active != -1) {
+				try {
+					state.questions[state.active].state[0] = 1;
+				} catch (err) {
+					alert("Requested Questino dosen't exists");
+				}
+			}
 			break;
 
 		case 'updateActiveAnswer':

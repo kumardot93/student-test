@@ -18,20 +18,6 @@ class Main extends Component {
 		};
 		this.props.setScreenFunction(this.enter);
 	}
-	// fetchData = (key) => {
-	// 	//fetches all the test data at once
-	// 	fetch(window.base + '/material/api/test/data/' + key + '/', { credentials: window.cred })
-	// 		.then((Response) => Response.json())
-	// 		.then((data) => this.props.updateTestData(data))
-	// 		.catch((error) => alert('Error fetching data: possible reasons unauthorised access aur connection issue '));
-	// };
-
-	//Fetching data after component has been mounted
-	// componentDidMount = () => {
-	//extracts key from url and fetchs all the test data at once
-	// let key = extractKey();
-	// this.fetchData(key);
-	// };
 
 	enter = (val) => {
 		//to change the value of this.state.enter
